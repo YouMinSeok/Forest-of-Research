@@ -1,0 +1,128 @@
+.topnav {
+  position: relative;
+  width: 100%;
+  z-index: 999;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 첫 번째 줄: 큰 배경 + 중앙 정렬된 로고 (상단 영역 높이를 300px로 조정) */
+.topnav-top {
+  background: url('../assets/header-bg.jpg') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px; /* 높이를 300px로 변경 */
+  padding: 0 2rem;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+}
+
+/* 로고 이미지 크기 */
+.logo-img {
+  width: 350px;  /* 로고 크기는 그대로 유지 */
+  height: auto;
+  margin: 0;
+}
+
+.topnav-left {
+  display: flex;
+  align-items: center;
+}
+
+/* 두 번째 줄: 메뉴(가운데) + 로그인/로그아웃(오른쪽) */
+.topnav-lower {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  height: 40px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ddd;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+/* 가운데(메뉴) */
+.lower-center {
+  justify-self: center;
+}
+
+/* 오른쪽(로그인/로그아웃) */
+.lower-right {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* 메뉴 스타일 */
+.topnav-menu ul {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.topnav-menu li {
+  list-style: none;
+  padding: 0.2rem 0.5rem;
+  border-right: 1px dotted #eee;
+}
+
+.topnav-menu li:last-child {
+  border-right: none;
+}
+
+.topnav-menu a {
+  color: #333;
+  font-weight: 500;
+  padding: 0.2rem 0.3rem;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+}
+
+.topnav-menu a:hover {
+  background-color: #ecffec;
+  border-radius: 4px;
+  transform: scale(1.05);
+}
+
+/* 로그인/회원가입/사용자/로그아웃 */
+.auth-link {
+  color: #666;
+  transition: color 0.2s;
+}
+
+.auth-link:hover {
+  color: #2e7d32;
+}
+
+.user-info {
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.logout-btn {
+  background: transparent;
+  border: 1px solid #2e7d32;
+  border-radius: 4px;
+  color: #2e7d32;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #2e7d32;
+  color: #fff;
+}
+
+.divider {
+  color: #ccc;
+}
+
+/* 기본 스타일 */
+body {
+  margin: 0;
+}

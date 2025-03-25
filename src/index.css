@@ -1,0 +1,25 @@
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Noto Sans KR', sans-serif;
+
+  /* 기존 #fafafa 대신, 더 연한 녹색 계열로 변경 */
+  /* 필요에 따라 #f9fff9, #f0fff0, #ecffec 등 실험 가능 */
+  background-color: #f9fff9;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul, li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  cursor: pointer;
+}

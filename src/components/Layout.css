@@ -1,0 +1,22 @@
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 헤더가 고정되지 않으므로 상단 패딩 제거 */
+.layout-main {
+  display: flex;
+  flex: 1;
+  background-color: #fafafa;
+}
+
+/* 중앙 영역 */
+.layout-center {
+  flex: 1;
+  padding: 1rem;
+  background-color: #fff;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
+}

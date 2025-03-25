@@ -1,0 +1,133 @@
+/* 댓글 섹션 최상단 컨테이너 */
+.comment-section {
+    margin-top: 2rem;
+  }
+  
+  /* 섹션 제목 (예: "댓글") */
+  .comment-section h2 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+  }
+  
+  /* 댓글 목록 영역 */
+  .comment-list {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* 개별 댓글 */
+  .comment-item {
+    border-bottom: 1px solid #eee;
+    padding: 0.8rem 0;
+  }
+  
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.3rem;
+  }
+  
+  .comment-writer {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .comment-content p {
+    margin: 0.4rem 0;
+    font-size: 0.95rem;
+    color: #333;
+    line-height: 1.4;
+  }
+  
+  .comment-image {
+    max-width: 200px;
+    margin-top: 0.5rem;
+    border: 1px solid #ccc;
+    display: block;
+    border-radius: 4px;
+  }
+  
+  /* ========== 댓글 작성 영역 ========== */
+  /* 전체를 한 박스로 감싸기 */
+  .comment-input-container {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+    background-color: #fff;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* 작성자 이름 표시 영역 (백엔드 연동 시 사용자 이름 들어갈 자리) */
+  .comment-input-header {
+    font-weight: bold;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  /* 댓글 입력창 (textarea) */
+  .comment-input-textarea {
+    width: 100%;
+    min-height: 50px;
+    resize: none;
+    border: none;
+    outline: none;
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+    /* 필요 시 배경색 or 포커스 효과 추가 가능 */
+  }
+  
+  /* 하단 아이콘(카메라, 이모티콘) + 등록 텍스트 */
+  .comment-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 왼쪽은 아이콘들, 오른쪽은 등록 */
+  }
+  
+  /* 왼쪽 아이콘 묶음 */
+  .comment-footer-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* 아이콘 사이 간격 */
+  }
+  
+  /* 카메라/이모티콘 아이콘 공통 스타일 */
+  .comment-icon {
+    font-size: 1.2rem;
+    color: #777;
+    cursor: pointer;
+  }
+  
+  .comment-icon:hover {
+    color: #03c75a;
+  }
+  
+  /* "등록"을 텍스트로 만들되 클릭 가능하게 */
+  .comment-submit-text {
+    color: #666;
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+  
+  .comment-submit-text:hover {
+    color: #03c75a;
+  }
+  
+  /* 이미지 미리보기 (댓글 작성 중 업로드한 이미지) */
+  .image-preview {
+    margin-top: 0.5rem;
+  }
+  
+  .image-preview img {
+    max-height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
