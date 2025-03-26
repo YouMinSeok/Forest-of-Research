@@ -73,6 +73,7 @@
   font-size: 0.9rem;
   border: none;
   box-shadow: none;
+  margin-top: 0.5rem;
 }
 
 .board-table thead tr {
@@ -107,4 +108,41 @@
 .post-prefix {
   font-weight: 700;
   color: #000;
+}
+
+/* ============================= */
+/* =       페이지네이션 영역      = */
+/* ============================= */
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 4px;
+}
+
+.page-btn {
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.page-btn:not(:disabled):hover {
+  background-color: #f0f0f0;
+}
+
+.page-btn.active {
+  background-color: #03c75a;
+  color: #fff;
+  border-color: #03c75a;
+}
+
+.page-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './BoardCommon.css';
 import CafeWritePost from '../../components/CafeWritePost';
 
@@ -6,7 +6,7 @@ import CafeWritePost from '../../components/CafeWritePost';
  * 공통 게시판 UI 컴포넌트
  * 
  * @param {string}   boardName - 게시판 이름 (예: "자유게시판", "공지사항")
- * @param {Array}    posts - 게시물 목록 (각 post에 title, writer, date, views, post_number 등 포함)
+ * @param {Array}    posts - 전체 게시물 목록
  * @param {boolean}  showWrite - 글 작성 폼 표시 여부
  * @param {boolean}  isLoggedIn - 로그인 여부
  * @param {string}   searchFilter - 검색 필터
@@ -17,7 +17,7 @@ import CafeWritePost from '../../components/CafeWritePost';
  * @param {Function} handleWriteButton - 글 작성 버튼 클릭 핸들러
  * @param {Function} handlePostClick - 게시글 클릭 시 상세 페이지 이동
  * @param {Function} handleWriteSubmit - 글 작성 폼 제출 핸들러
- * @param {boolean}  hasFileColumn - 파일 열 표시 여부 (뉴스/공지사항 등에서만 사용)
+ * @param {boolean}  hasFileColumn - 파일 열 표시 여부
  */
 function BoardCommon({
   boardName,
@@ -34,15 +34,48 @@ function BoardCommon({
   handleWriteSubmit,
   hasFileColumn,
 }) {
+  // =============================
+  // 페이지네이션 상태 & 로직
+  // =============================
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 20; // 페이지당 게시글 수
+  const totalPosts = posts.length;
+  const totalPages = Math.ceil(totalPosts / pageSize);
+
+  // 현재 페이지에 표시할 게시글 목록 (slice)
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const currentPosts = posts.slice(startIndex, endIndex);
+
+  // 페이지 버튼 클릭 핸들러
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // "이전" 버튼 핸들러
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  // "다음" 버튼 핸들러
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
   return (
     <div className="board-page">
       <h2>{boardName} 게시판</h2>
 
+      {/* 글 작성 폼이 아닐 때만 검색/목록 표시 */}
       {!showWrite && (
         <>
           <div className="board-top-bar">
             <div className="board-info">
-              총 게시물 <strong>{posts.length}</strong>건
+              총 게시물 <strong>{totalPosts}</strong>건
             </div>
             <div className="board-search-area">
               <select
@@ -85,7 +118,7 @@ function BoardCommon({
               </tr>
             </thead>
             <tbody>
-              {posts.map((post) => (
+              {currentPosts.map((post) => (
                 <tr
                   key={post.id}
                   style={{ cursor: 'pointer' }}
@@ -107,9 +140,39 @@ function BoardCommon({
               ))}
             </tbody>
           </table>
+
+          {/* 페이지네이션 영역 */}
+          {totalPages > 1 && (
+            <div className="pagination-container">
+              <button
+                className="page-btn"
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+              >
+                이전
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  className={`page-btn ${page === currentPage ? 'active' : ''}`}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                className="page-btn"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                다음
+              </button>
+            </div>
+          )}
         </>
       )}
 
+      {/* 글 작성 폼 표시 */}
       {showWrite && (
         <CafeWritePost boardList={[boardName]} onSubmit={handleWriteSubmit} />
       )}

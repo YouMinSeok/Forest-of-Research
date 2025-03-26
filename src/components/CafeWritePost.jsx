@@ -115,9 +115,7 @@ function CafeWritePost({ boardList, onSubmit }) {
   };
 
   const handleImageUploadClick = () => {
-    if (imageInputRef.current) {
-      imageInputRef.current.click();
-    }
+    imageInputRef.current?.click();
   };
 
   // ============= (2) 동영상 업로드 =============
@@ -134,9 +132,7 @@ function CafeWritePost({ boardList, onSubmit }) {
   };
 
   const handleVideoUploadClick = () => {
-    if (videoInputRef.current) {
-      videoInputRef.current.click();
-    }
+    videoInputRef.current?.click();
   };
 
   // ============= (3) 첨부파일 업로드 =============
@@ -145,7 +141,6 @@ function CafeWritePost({ boardList, onSubmit }) {
     if (!file) return;
     const url = await uploadFile(file, 'attachment');
 
-    // 첨부파일 목록에 추가
     const newAttachment = {
       name: file.name,
       url
@@ -154,9 +149,7 @@ function CafeWritePost({ boardList, onSubmit }) {
   };
 
   const handleAttachUploadClick = () => {
-    if (attachInputRef.current) {
-      attachInputRef.current.click();
-    }
+    attachInputRef.current?.click();
   };
 
   // 첨부파일 제거 (X 버튼)
@@ -362,25 +355,32 @@ function CafeWritePost({ boardList, onSubmit }) {
         <div id="custom-toolbar">
           {/* (1) 1차 도구 - 이미지/동영상/첨부파일 */}
           <div className="toolbar-line file-tools">
-            <span className="ql-formats">
-              <div className="image-upload-container">
+            <span className="ql-formats tool-items-container">
+              {/* 첫 번째: 이미지 */}
+              <div className="tool-item">
                 <button className="icon-btn" onClick={handleImageUploadClick}>
                   <i className="material-icons icon-img">image</i>
                   <div className="icon-label">이미지</div>
                 </button>
               </div>
-              <div className="video-upload-container">
+
+              {/* 두 번째: 동영상 */}
+              <div className="tool-item">
                 <button className="icon-btn" onClick={handleVideoUploadClick}>
                   <i className="material-icons icon-video">videocam</i>
                   <div className="icon-label">동영상</div>
                 </button>
               </div>
-              <div className="video-upload-container">
+
+              {/* 세 번째: 첨부파일 */}
+              <div className="tool-item">
                 <button className="icon-btn" onClick={handleAttachUploadClick}>
                   <i className="material-icons icon-video">attach_file</i>
                   <div className="icon-label">첨부파일</div>
                 </button>
               </div>
+
+              {/* (나중에 4번째, 5번째 버튼 추가 시 .tool-item 반복) */}
             </span>
           </div>
 

@@ -37,7 +37,7 @@
 /* 글쓰기 아래 가로선 두께 조정 */
 .header-line {
   border: none;
-  border-top: 2px solid #666; /* 굵게 조정 (기본 1px → 2px) */
+  border-top: 2px solid #666;
   margin: 0 0 1rem 0;
 }
 
@@ -158,43 +158,36 @@
   border-bottom: 1px solid #ccc;
   padding: 8px 12px;
 }
-
-/* toolbar-line: 한 줄로 붙이고 여백 최소화 */
 .toolbar-line {
   display: inline-flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 0;
 }
-
-/* 첫 번째 줄(파일도구) - 절대 수정 X */
 .toolbar-line.file-tools {
   padding: 8px 16px;
   min-height: auto;
   margin-bottom: 0;
 }
-
-/* ql-formats: 여러 버튼 간 간격 */
 .ql-formats {
   display: inline-flex;
   align-items: center;
   gap: 12px;
 }
 
-/* 이미지 업로드 컨테이너 */
-.image-upload-container {
+/* (새로 추가) .tool-items-container: 나중에 4~5번째 버튼도 같은 간격 유지 */
+.tool-items-container {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  margin: 0;
 }
 
-/* 동영상 업로드 컨테이너 */
-.video-upload-container {
+/* 각 버튼 그룹 (이미지/동영상/첨부파일) */
+.tool-item {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  margin-left: 20px; /* 이미지와 동영상 사이 띄움 */
+}
+.tool-item + .tool-item {
+  margin-left: 20px; /* 두 번째부터 20px 간격 */
 }
 
 /* 아이콘 버튼 (공통) */
@@ -210,9 +203,17 @@
   transition: background-color 0.2s;
   line-height: 1;
   gap: 4px;
+
+  /* 아이콘+텍스트 전체 클릭 가능하도록, 자식에는 pointer-events: none */
 }
 .icon-btn:hover {
   background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 아이콘/텍스트 자식 요소: pointer-events: none => 부모 버튼 전체가 클릭 영역 */
+.icon-btn i.material-icons,
+.icon-btn .icon-label {
+  pointer-events: none;
 }
 
 /* 아이콘 크기 */
@@ -233,7 +234,7 @@
   white-space: nowrap;
   vertical-align: middle;
   text-align: center;
-  margin-left: -6px; /* 텍스트를 아이콘 쪽으로 약간 이동 */
+  margin-left: -6px;
 }
 
 /* 가로 구분선 (툴바 구분) */
@@ -243,14 +244,10 @@
   background-color: #ddd;
   margin: 8px 0;
 }
-
-/* 두 번째 줄(본문도구) */
 .text-tools {
   width: 100%;
   justify-content: flex-start;
 }
-
-/* 버튼/셀렉트 공통 (두 번째 줄) */
 #custom-toolbar .ql-formats button,
 #custom-toolbar .ql-formats select {
   font-family: inherit;
@@ -264,8 +261,6 @@
 #custom-toolbar .ql-formats button:hover {
   background-color: #e0e0e0;
 }
-
-/* Quill 기본 아이콘 제거 */
 .ql-snow .ql-toolbar button.ql-image::before,
 .ql-snow .ql-toolbar button.ql-video::before,
 .ql-snow .ql-toolbar button.ql-file::before,
@@ -277,8 +272,6 @@
 .ql-snow .ql-toolbar button.ql-clean::before {
   content: none !important;
 }
-
-/* (선택) 커스텀 폰트 (Quill용) */
 .ql-font-notoSansKR {
   font-family: 'Noto Sans KR', sans-serif !important;
 }
@@ -297,7 +290,6 @@
   margin-top: 1rem;
   padding: 1rem 0;
   margin-bottom: 1rem;
-  /* 상단의 얇은 선 제거 → 하단에 굵은 선 추가 */
   border-bottom: 2px solid #666;
 }
 

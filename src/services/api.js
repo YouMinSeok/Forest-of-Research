@@ -8,10 +8,12 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+// 게시글 관련 API
 export const fetchBoardPosts = async (boardType) => {
   try {
-    // boardType를 category로 전달합니다.
-    const response = await api.get('/api/board/', { params: { category: boardType } });
+    const response = await api.get('/api/board/', {
+      params: { category: boardType },
+    });
     return response.data;
   } catch (error) {
     console.error("게시글 가져오기 실패:", error.response?.data || error.message);
@@ -32,6 +34,78 @@ export const createBoardPost = async (boardType, postData) => {
   }
 };
 
-// 나머지 (fetchBoardPost, incrementBoardView, likeBoardPost)도 그대로 사용
+export const fetchBoardPost = async (postId) => {
+  try {
+    const response = await api.get(`/api/board/${postId}`);
+    return response.data;
+  } catch (error) {
+    console.error("단일 게시글 조회 실패:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const incrementBoardView = async (postId) => {
+  try {
+    const response = await api.post(`/api/board/${postId}/view`);
+    return response.data;
+  } catch (error) {
+    console.error("조회수 증가 실패:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const likeBoardPost = async (postId) => {
+  try {
+    const response = await api.post(`/api/board/${postId}/like`);
+    return response.data;
+  } catch (error) {
+    console.error("좋아요 처리 실패:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// 댓글 관련 API
+export const fetchComments = async (postId) => {
+  try {
+    const response = await api.get(`/api/board/${postId}/comments`);
+    return response.data;
+  } catch (error) {
+    console.error("댓글 가져오기 실패:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const createComment = async (postId, commentData) => {
+  try {
+    const response = await api.post(`/api/board/${postId}/comments/create`, commentData);
+    return response.data;
+  } catch (error) {
+    console.error("댓글 작성 실패:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const deleteComment = async (postId, commentId) => {
+  try {
+    const response = await api.delete(`/api/board/${postId}/comments/${commentId}`);
+    return response.data;
+  } catch (error) {
+    console.error("댓글 삭제 실패:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+/**
+ * 현재 로그인된 사용자 정보 가져오기 (/api/auth/me)
+ */
+export const getCurrentUser = async () => {
+  try {
+    const response = await api.get('/api/auth/me');
+    return response.data; // 예: { user: { _id, name, email, ... } }
+  } catch (error) {
+    console.error("사용자 정보 가져오기 실패:", error.response?.data || error.message);
+    throw error;
+  }
+};
 
 export default api;
