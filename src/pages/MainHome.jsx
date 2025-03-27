@@ -143,7 +143,7 @@ function MainHome() {
         <h2 className="block-title">공지사항</h2>
         <div className="notice-list">
           {noticePosts.length > 0 ? (
-            noticePosts.map((notice) => (
+            noticePosts.slice(0, 5).map((notice) => (
               <div
                 key={notice.id}
                 className="notice-item"

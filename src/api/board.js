@@ -1,3 +1,4 @@
+// api/board.js
 import api from '../services/api';
 
 // 게시글 목록 조회

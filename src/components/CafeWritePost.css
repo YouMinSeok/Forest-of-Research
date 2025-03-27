@@ -1,5 +1,5 @@
 /* ==================================================================
-   CafeWritePost.css (최종)
+   CafeWritePost.css (최종 수정본)
    ================================================================== */
 
 /* 바깥 래퍼 */
@@ -175,79 +175,7 @@
   gap: 12px;
 }
 
-/* (새로 추가) .tool-items-container: 나중에 4~5번째 버튼도 같은 간격 유지 */
-.tool-items-container {
-  display: inline-flex;
-  align-items: center;
-}
-
-/* 각 버튼 그룹 (이미지/동영상/첨부파일) */
-.tool-item {
-  display: inline-flex;
-  align-items: center;
-}
-.tool-item + .tool-item {
-  margin-left: 20px; /* 두 번째부터 20px 간격 */
-}
-
-/* 아이콘 버튼 (공통) */
-.icon-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 4px 6px;
-  border-radius: 4px;
-  transition: background-color 0.2s;
-  line-height: 1;
-  gap: 4px;
-
-  /* 아이콘+텍스트 전체 클릭 가능하도록, 자식에는 pointer-events: none */
-}
-.icon-btn:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-/* 아이콘/텍스트 자식 요소: pointer-events: none => 부모 버튼 전체가 클릭 영역 */
-.icon-btn i.material-icons,
-.icon-btn .icon-label {
-  pointer-events: none;
-}
-
-/* 아이콘 크기 */
-.icon-img,
-.icon-video {
-  font-size: 24px;
-  line-height: 1;
-  color: #333;
-  vertical-align: middle;
-}
-
-/* 라벨 (이미지, 동영상, 첨부파일) */
-.icon-label {
-  margin: 0;
-  font-size: 12px;
-  color: #666;
-  line-height: 1;
-  white-space: nowrap;
-  vertical-align: middle;
-  text-align: center;
-  margin-left: -6px;
-}
-
-/* 가로 구분선 (툴바 구분) */
-.toolbar-separator {
-  width: 100%;
-  height: 1px;
-  background-color: #ddd;
-  margin: 8px 0;
-}
-.text-tools {
-  width: 100%;
-  justify-content: flex-start;
-}
+/* 툴바 내 버튼 및 선택 요소 스타일 */
 #custom-toolbar .ql-formats button,
 #custom-toolbar .ql-formats select {
   font-family: inherit;
@@ -261,11 +189,13 @@
 #custom-toolbar .ql-formats button:hover {
   background-color: #e0e0e0;
 }
+/* Quill 기본 아이콘 내용 제거 */
 .ql-snow .ql-toolbar button.ql-image::before,
 .ql-snow .ql-toolbar button.ql-video::before,
 .ql-snow .ql-toolbar button.ql-file::before,
 .ql-snow .ql-toolbar button.ql-link::before,
 .ql-snow .ql-toolbar button.ql-bold::before,
+.ql-snow .ql-toolbar button.ql-italic::before,
 .ql-snow .ql-toolbar button.ql-underline::before,
 .ql-snow .ql-toolbar button.ql-strike::before,
 .ql-snow .ql-toolbar button.ql-list::before,
@@ -285,7 +215,10 @@
   font-family: 'Nanum Square', sans-serif !important;
 }
 
-/* ==================== 첨부파일 영역 ==================== */
+/* ==================== 첨부파일 영역 ====================
+   파일 업로드 기능이 제거되었으므로 아래 영역은 삭제하거나
+   주석 처리하시면 됩니다.
+-------------------------------------------------------------
 .attachment-area {
   margin-top: 1rem;
   padding: 1rem 0;
@@ -333,3 +266,4 @@
   background-color: #e8e8e8;
   outline: none;
 }
+------------------------------------------------------------- */

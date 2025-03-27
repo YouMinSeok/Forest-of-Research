@@ -40,25 +40,16 @@ function CafeWritePost({ boardList, onSubmit }) {
   const [tags, setTags] = useState('');
   const [linkModalOpen, setLinkModalOpen] = useState(false);
 
-  // 첨부파일 목록
-  const [attachments, setAttachments] = useState([]);
-
   // Quill ref
   const quillRef = useRef(null);
 
-  // (1) 1차 도구: 이미지/동영상/첨부파일 (절대 수정 X)
-  const imageInputRef = useRef(null);
-  const videoInputRef = useRef(null);
-  const attachInputRef = useRef(null);
-
-  // Quill modules & formats (절대 수정 X)
+  // Quill modules & formats (툴바 구성)
   const modules = useMemo(() => ({
     toolbar: {
       container: '#custom-toolbar',
       handlers: {
-        link: () => {
-          setLinkModalOpen(true);
-        }
+        // 링크 버튼 클릭 시 모달을 오픈
+        link: () => setLinkModalOpen(true)
       }
     }
   }), []);
@@ -66,13 +57,17 @@ function CafeWritePost({ boardList, onSubmit }) {
   const formats = useMemo(
     () => [
       'header', 'font', 'size',
-      'bold', 'underline', 'strike',
-      'list', 'bullet', 'link', 'image', 'video'
+      'bold', 'italic', 'underline', 'strike',
+      'blockquote', 'code-block',
+      'list', 'script', 'indent', 'direction',
+      'color', 'background', 'align',
+      'link', 'image', 'video', 'formula',
+      'clean'
     ],
     []
   );
 
-  // 게시판/말머리 선택
+  // 게시판/말머리 선택 핸들러
   const handleBoardChange = (e) => {
     const board = e.target.value;
     setSelectedBoard(board);
@@ -89,79 +84,7 @@ function CafeWritePost({ boardList, onSubmit }) {
     }
   };
 
-  /**
-   * 파일 업로드 (백엔드 연동 시 교체)
-   */
-  const uploadFile = async (file, type) => {
-    // 테스트용 가짜 업로드
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(`https://example.com/uploads/${file.name}`);
-      }, 600);
-    });
-  };
-
-  // ============= (1) 이미지 업로드 =============
-  const handleImageSelected = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const url = await uploadFile(file, 'image');
-    if (quillRef.current) {
-      const editor = quillRef.current.getEditor();
-      const range = editor.getSelection() || { index: editor.getLength(), length: 0 };
-      editor.insertEmbed(range.index, 'image', url);
-      editor.setSelection(range.index + 1, 0);
-    }
-  };
-
-  const handleImageUploadClick = () => {
-    imageInputRef.current?.click();
-  };
-
-  // ============= (2) 동영상 업로드 =============
-  const handleVideoSelected = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const url = await uploadFile(file, 'video');
-    if (quillRef.current) {
-      const editor = quillRef.current.getEditor();
-      const range = editor.getSelection() || { index: editor.getLength(), length: 0 };
-      editor.insertEmbed(range.index, 'video', url);
-      editor.setSelection(range.index + 1, 0);
-    }
-  };
-
-  const handleVideoUploadClick = () => {
-    videoInputRef.current?.click();
-  };
-
-  // ============= (3) 첨부파일 업로드 =============
-  const handleAttachSelected = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const url = await uploadFile(file, 'attachment');
-
-    const newAttachment = {
-      name: file.name,
-      url
-    };
-    setAttachments((prev) => [...prev, newAttachment]);
-  };
-
-  const handleAttachUploadClick = () => {
-    attachInputRef.current?.click();
-  };
-
-  // 첨부파일 제거 (X 버튼)
-  const handleRemoveAttachment = (index) => {
-    setAttachments((prev) => {
-      const newArr = [...prev];
-      newArr.splice(index, 1);
-      return newArr;
-    });
-  };
-
-  // 등록 버튼
+  // 등록 버튼 핸들러
   const handleSubmit = () => {
     if (!selectedBoard) {
       alert('게시판을 선택하세요.');
@@ -204,8 +127,7 @@ function CafeWritePost({ boardList, onSubmit }) {
       tags: tagArr,
       date: new Date().toISOString().split('T')[0],
       writer: '테스트사용자',
-      views: 0,
-      attachments
+      views: 0
     };
 
     onSubmit(newPost);
@@ -217,10 +139,9 @@ function CafeWritePost({ boardList, onSubmit }) {
     setTitle('');
     setEditorContent('');
     setTags('');
-    setAttachments([]);
   };
 
-  // 링크 삽입 (기존 로직)
+  // 링크 삽입 핸들러 (유튜브, 비메오 자동 임베드 포함)
   const handleInsertLink = (url) => {
     if (!quillRef.current) return;
     const editor = quillRef.current.getEditor();
@@ -251,28 +172,6 @@ function CafeWritePost({ boardList, onSubmit }) {
 
   return (
     <div className="cafe-write-container">
-      {/* 숨겨진 파일 입력 (이미지/동영상/첨부파일) */}
-      <input
-        type="file"
-        accept="image/*"
-        ref={imageInputRef}
-        style={{ display: 'none' }}
-        onChange={handleImageSelected}
-      />
-      <input
-        type="file"
-        accept="video/*"
-        ref={videoInputRef}
-        style={{ display: 'none' }}
-        onChange={handleVideoSelected}
-      />
-      <input
-        type="file"
-        ref={attachInputRef}
-        style={{ display: 'none' }}
-        onChange={handleAttachSelected}
-      />
-
       {/* 헤더 */}
       <div className="header-bar">
         <div className="header-left">글쓰기</div>
@@ -351,49 +250,11 @@ function CafeWritePost({ boardList, onSubmit }) {
           </div>
         </div>
 
-        {/* 커스텀 툴바 (절대 수정 X) */}
+        {/* 커스텀 툴바 - 1차 도구와 2차 도구로 그룹화 */}
         <div id="custom-toolbar">
-          {/* (1) 1차 도구 - 이미지/동영상/첨부파일 */}
+          {/* 1차 도구 (기본 인라인 스타일 및 링크 커스텀) */}
           <div className="toolbar-line file-tools">
-            <span className="ql-formats tool-items-container">
-              {/* 첫 번째: 이미지 */}
-              <div className="tool-item">
-                <button className="icon-btn" onClick={handleImageUploadClick}>
-                  <i className="material-icons icon-img">image</i>
-                  <div className="icon-label">이미지</div>
-                </button>
-              </div>
-
-              {/* 두 번째: 동영상 */}
-              <div className="tool-item">
-                <button className="icon-btn" onClick={handleVideoUploadClick}>
-                  <i className="material-icons icon-video">videocam</i>
-                  <div className="icon-label">동영상</div>
-                </button>
-              </div>
-
-              {/* 세 번째: 첨부파일 */}
-              <div className="tool-item">
-                <button className="icon-btn" onClick={handleAttachUploadClick}>
-                  <i className="material-icons icon-video">attach_file</i>
-                  <div className="icon-label">첨부파일</div>
-                </button>
-              </div>
-
-              {/* (나중에 4번째, 5번째 버튼 추가 시 .tool-item 반복) */}
-            </span>
-          </div>
-
-          <div className="toolbar-separator"></div>
-
-          {/* (2) 2차 도구 - 본문도구 */}
-          <div className="toolbar-line text-tools">
             <span className="ql-formats">
-              <select className="ql-header" defaultValue="">
-                <option value="">본문</option>
-                <option value="1">제목1</option>
-                <option value="2">제목2</option>
-              </select>
               <select className="ql-font" defaultValue="notoSansKR">
                 <option value="notoSansKR">기본서체</option>
                 <option value="nanumGothic">나눔고딕</option>
@@ -408,18 +269,43 @@ function CafeWritePost({ boardList, onSubmit }) {
                 <option value="18px">18pt</option>
                 <option value="20px">20pt</option>
               </select>
-              <button className="ql-bold">B</button>
-              <button className="ql-underline">U</button>
-              <button className="ql-strike">S</button>
-              <button className="ql-link">Link</button>
-              <button className="ql-list" value="ordered">1.</button>
-              <button className="ql-list" value="bullet">•</button>
-              <button className="ql-clean">X</button>
+              <select className="ql-header" defaultValue="">
+                <option value="">본문</option>
+                <option value="1">제목1</option>
+                <option value="2">제목2</option>
+              </select>
+              <button className="ql-bold" />
+              <button className="ql-italic" />
+              <button className="ql-underline" />
+              <button className="ql-strike" />
+              <button className="ql-link" />
+            </span>
+          </div>
+
+          {/* 2차 도구 (본문 관련 추가 서식) */}
+          <div className="toolbar-line text-tools">
+            <span className="ql-formats">
+              <button className="ql-blockquote" />
+              <button className="ql-code-block" />
+              <button className="ql-list" value="ordered" />
+              <button className="ql-list" value="bullet" />
+              <button className="ql-script" value="sub" />
+              <button className="ql-script" value="super" />
+              <button className="ql-indent" value="-1" />
+              <button className="ql-indent" value="+1" />
+              <select className="ql-direction" />
+              <select className="ql-color" />
+              <select className="ql-background" />
+              <select className="ql-align" />
+              <button className="ql-image" />
+              <button className="ql-video" />
+              <button className="ql-formula" />
+              <button className="ql-clean" />
             </span>
           </div>
         </div>
 
-        {/* 본문(ReactQuill) 영역 + 태그(본문과 함께) */}
+        {/* 본문(ReactQuill) 영역 + 태그 영역 */}
         <div className="quill-wrap">
           <ReactQuill
             ref={quillRef}
@@ -441,56 +327,9 @@ function CafeWritePost({ boardList, onSubmit }) {
             />
           </div>
         </div>
-
-        {/* 첨부파일 영역 (첨부파일이 1개 이상일 때만 표시) */}
-        {attachments.length > 0 && (
-          <div className="attachment-area">
-            <hr
-              style={{
-                margin: '0 0 1rem 0',
-                border: 'none',
-                borderTop: '1px solid #ddd'
-              }}
-            />
-            <label>첨부파일</label>
-            <ul>
-              {attachments.map((fileObj, idx) => (
-                <li key={idx}>
-                  {/* 파일명 */}
-                  <div className="file-name">{fileObj.name}</div>
-
-                  {/* 다운로드 버튼 */}
-                  <button
-                    onClick={() => {
-                      const link = document.createElement('a');
-                      link.href = fileObj.url;
-                      link.download = fileObj.name;
-                      link.click();
-                    }}
-                  >
-                    다운로드
-                  </button>
-
-                  {/* 미리보기 버튼 */}
-                  <button onClick={() => window.open(fileObj.url, '_blank')}>
-                    미리보기
-                  </button>
-
-                  {/* X (제거) 버튼 */}
-                  <button
-                    onClick={() => handleRemoveAttachment(idx)}
-                    style={{ color: 'red' }}
-                  >
-                    X
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
 
-      {/* Link Modal (기존) */}
+      {/* Link Modal (링크 커스텀 유지) */}
       <LinkModal
         isOpen={linkModalOpen}
         onClose={() => setLinkModalOpen(false)}

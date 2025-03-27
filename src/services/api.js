@@ -1,6 +1,12 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+// fallback 제거
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+// 만약 환경변수가 설정되지 않았다면 빌드 시점에 에러 발생
+if (!API_BASE_URL) {
+  throw new Error("REACT_APP_API_BASE_URL is not defined! Please set it in your environment variables.");
+}
 
 const api = axios.create({
   baseURL: API_BASE_URL,
